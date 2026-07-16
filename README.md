@@ -19,7 +19,7 @@ exploitables, en couvrant :
 
 | Fichier | Description |
 |---|---|
-| `Guru99_TestCases.xlsx` | ~90 cas de test répartis sur 9 feuilles (Nouveau Client, Modification Client, Suppression Client, Nouveau/Modifier/Supprimer Compte, Mini Relevé, Relevé Personnalisé, Tests d'intégration) |
+| `TestCases_GBank.xlsx` | ~90 cas de test répartis sur 9 feuilles (Nouveau Client, Modification Client, Suppression Client, Nouveau/Modifier/Supprimer Compte, Mini Relevé, Relevé Personnalisé, Tests d'intégration) |
 
 ## Méthode
 
