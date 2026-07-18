@@ -50,10 +50,20 @@ contre le site réel.
 
 Une partie de ces cas (champ Nom, `NouvauClient`) a été automatisée avec **Python +
 Playwright**, en s'exécutant directement contre le site réel `demo.guru99.com`. Voir le
-dossier [`automation/`](./automation) *(à venir)*.
+dossier [`automation/`](./automation) .
+
+Prérequis pour exécuter les scripts d'automatisation
+
+Les scripts du dossier `Automation/` nécessitent des identifiants manager valides pour se connecter à Guru99 Bank.
+
+1. Va sur https://demo.guru99.com/V4/index.php
+2. Suis la procédure "Steps To Generate Access" indiquée sur la page pour obtenir un identifiant et un mot de passe
+3. Dans les scripts, remplace `METS_TON_IDENTIFIANT_ICI` et `METS_TON_MOT_DE_PASSE_ICI` par tes propres identifiants
 
 ## Contexte
 
 Ce dépôt fait partie de ma reconversion vers le métier de testeuse QA / automatisation.
 Guru99 Bank est un site de démo public conçu pour ce type d'entraînement — aucune donnée
 réelle n'y est utilisée.
+
+
