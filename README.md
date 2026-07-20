@@ -50,7 +50,7 @@ contre le site réel.
 
 Une partie de ces cas (champ Nom, `NouvauClient`) a été automatisée avec **Python +
 Playwright**, en s'exécutant directement contre le site réel `demo.guru99.com`. Voir le
-dossier [`automation/`](./automation) .
+dossier [`automation/`](https://github.com/AissatouGassama/G99-bank-test-cases/tree/master/Automation) .
 
 Prérequis pour exécuter les scripts d'automatisation
 
