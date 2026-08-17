@@ -1,120 +1,73 @@
 # Guru99 Bank — Test Cases, Bug Tracking & Automation
 
-Projet personnel de test QA (manuel + automatisé) réalisé sur **Guru99 Bank**, le site bancaire de démonstration public (`demo.guru99.com`), dans le cadre d'une reconversion vers le métier de QA/Testeur Automaticien.
+Projet personnel de test QA (manuel + automatisé) sur **Guru99 Bank**, le site bancaire de démonstration public (`demo.guru99.com`), dans le cadre d'une reconversion vers le métier de QA/Testeur Automaticien.
 
-Ce dépôt couvre l'ensemble du cycle de test : analyse des exigences, conception de cas de test, exécution manuelle, suivi des anomalies, tests de régression suite à une évolution du système, et automatisation avec Python/Playwright.
-
-## Sommaire
-
-- [Contexte du projet](#contexte-du-projet)
-- [Structure du dépôt](#structure-du-dépôt)
-- [Cas de test](#cas-de-test)
-- [Suivi des anomalies (Bug Tracker)](#suivi-des-anomalies-bug-tracker)
-- [Tests de régression (V1 → V2)](#tests-de-régression-v1--v2)
-- [Automatisation (Playwright / Python)](#automatisation-playwright--python)
-- [Prérequis pour exécuter les scripts](#prérequis-pour-exécuter-les-scripts)
-- [Compétences démontrées](#compétences-démontrées)
+Le dépôt couvre le cycle de test complet : analyse des exigences, conception de cas de test, exécution manuelle, suivi des anomalies, retesting après évolution du système, et automatisation avec Python, Playwright et pytest.
 
 ## Contexte du projet
 
-Guru99 Bank propose deux versions successives de son cahier des charges (SRS v1 puis v2), avec une évolution du site entre les deux versions. Ce dépôt suit cette évolution du début à la fin :
+Guru99 Bank propose des versions successives de son cahier des charges (SRS v1 puis v2, v3 et v4), avec une évolution du site entre les versions. Ce dépôt suit ce cycle de bout en bout :
 
-1. Analyse du **SRS v1** (traduit en français) et rédaction de ~90 cas de test
-2. Exécution manuelle des tests sur la V1 du site
-3. Documentation des anomalies rencontrées
-4. Réception du **SRS v2** et d'une nouvelle version du site
-5. **Retesting** complet en V2 pour vérifier les correctifs et détecter d'éventuelles régressions
-6. Automatisation d'un scénario complet (création client → création compte) avec Python et Playwright
+1. Analyse du SRS v1 et rédaction de ~90 cas de test (9 modules)
+2. Exécution manuelle sur la V1, documentation des anomalies
+3. Retesting complet en V2 : vérification des correctifs, détection de régressions
+4. Automatisation progressive des scénarios avec Python, Playwright et pytest
 
 ## Structure du dépôt
-
-```
-├── TestCases_GBank_V1.xlsx     # Cas de test (manuel), 9 modules, test v1
-├── suivieBugs_V1_GBank.xlsx     # Suivi des anomalies V1(bug tracker)
-├── TestCases_GBank_V2.xlsx      # Cas de test (manuel), 9 modules, retesting V1/V2
-   suivieBugs_V2_GBank           # Suivi des anomalies V2 (bug tracker)
-├── Automation/                    # Scripts Python + Playwright
-│   └── scenario_new_customer.py   # Scénario complet : connexion → client → compte
-├──
+├── TestCases_GBank_V1.xlsx # Cas de test manuels, V1
+├── suivieBugs_V1_GBank.xlsx # Suivi des anomalies V1
+├── TestCases_GBank_V2.xlsx # Cas de test manuels, retesting V2
+├── suivieBugs_V2_GBank.xlsx # Suivi des anomalies V2
+├── Automation/
+│ ├── Pages/ # Page Object Model : un fichier par page du site
+│ ├── conftest.py # Fixtures pytest partagées (connexion, etc.)
+│ ├── .env # Identifiants (non versionné, voir Prérequis)
+│ └── test_*.py # Un fichier de test par module fonctionnel
 └── README.md
-```
 
-## Cas de test
 
-Le fichier `TestCases_GBank_V1.xlsx` couvre 9 modules fonctionnels du SRS :
+## Cas de test manuels
 
-| Module | Cas de test |
-| --- | --- |
-| Nouveau client | NC1–NC29 |
-| Modifier client | MC1–MC30 |
-| Supprimer client | SC1–SC4 |
-| Nouveau compte | NCO1–NCO8 |
-| Modifier compte | MCO1–MCO5 |
-| Supprimer compte | SCO1–SC04 |
-| Mini relevé | MR1–MR4 |
-| Relevé personnalisé | RP1–RP9 |
-| Consultation solde | CS1–CS3 |
-| Tests d'intégration (bout en bout) | TI1–TI24 |
+Les fichiers `TestCases_GBank_V*.xlsx` couvrent 9 modules fonctionnels du SRS (Nouveau/Modifier/Supprimer client et compte, relevés, solde, tests d'intégration), avec une structure standard (référence, étapes, résultat attendu/obtenu, statut) et une colonne dédiée au retesting V2.
 
-Chaque cas de test suit une structure standard : référence, scénario, cas de test, étapes, données de test, résultat attendu, résultat obtenu, statut Pass/Fail — avec une colonne dédiée au **retesting en V2**.
+> Conformément au SRS (section 1.2, tests d'automatisation hors périmètre), ces fichiers reflètent les tests **manuels**. L'automatisation présentée ici est une démarche personnelle complémentaire.
 
-> **Note sur le périmètre :** conformément à la section 1.2 du SRS (« les tests d'automatisation sont hors périmètre »), les résultats de ce fichier reflètent les **tests manuels**. L'automatisation présentée dans ce dépôt est une démarche personnelle complémentaire, réalisée à des fins d'apprentissage et de démonstration de compétences.
+## Suivi des anomalies
 
-## Suivi des anomalies (Bug Tracker)
+Les fichiers `suivieBugs_V*_GBank.xlsx` centralisent les anomalies détectées (statut, priorité, sévérité, étapes de reproduction). Les défauts liés à une même cause racine sont consolidés plutôt que dupliqués.
 
-Le fichier `suivieBugs_V1_GBank.xlsx` centralise les anomalies détectées, avec statut, priorité, sévérité et étapes de reproduction.
+## Automatisation (Playwright / pytest)
 
-Points clés de la démarche :
-- Les défauts causés par une même cause racine (instabilité du serveur de démo, ~51 cas impactés en V1) sont **consolidés en une seule entrée** plutôt que dupliqués, pour garder le tracker lisible et actionnable.
-- Chaque défaut a été **retesté en V2** pour vérifier sa résolution.
-- Un défaut fonctionnel réel a été identifié lors du retesting : la contrainte d'unicité de l'email (exigence F34 du SRS) n'est pas appliquée lors de la **modification** d'un client, permettant d'enregistrer un email déjà utilisé par un autre client sans message d'erreur.
+Le dossier `Automation/` applique une architecture **Page Object Model** : chaque page du site a sa propre classe (`Pages/`), isolant les locators et actions. Les tests eux-mêmes sont écrits avec **pytest**, organisés par module fonctionnel, et réutilisent une fixture de connexion partagée (`conftest.py`) pour éviter toute duplication.
 
-## Tests de régression (V1 → V2)
+Chaque module couvert suit la même approche :
+- Un scénario positif (happy path), vérifiant qu'une action se déroule normalement
+- Des cas négatifs, isolant chaque règle de validation testée (un test = une seule vérification)
 
-Entre la V1 et la V2 du système, plusieurs changements ont été introduits (voir historique de révision du SRS v2) :
+Pour lancer l'ensemble des tests :
 
-- Renommage de champ : « Limite inférieure de montant » → « Valeur minimale de transaction »
-- Les champs Identifiant client et Solde sont désactivés dans le formulaire « Modifier compte »
-- Les champs Nom, Sexe et Date de naissance sont désactivés dans le formulaire « Modifier client »
+python -m pytest -s --headed
 
-Le retesting complet a permis de confirmer :
-- La résolution de l'instabilité serveur observée en V1 (la grande majorité des cas passent désormais de Fail à Pass)
-- La persistance de 3 anomalies réelles indépendantes du serveur (validation manquante sur le dépôt initial et le formulaire de relevé personnalisé)
-- Une régression sur un cas (email avec espace lors de la modification d'un client)
-- Un nouveau défaut fonctionnel non détecté en V1 (unicité de l'email non vérifiée à la modification)
+Pour lancer un seul fichier :
 
-Cette démarche complète — cas de test, exécution, documentation, puis retesting suite à évolution — reproduit un vrai cycle de test de régression tel qu'on le rencontre en entreprise.
+python -m pytest test_nom_du_fichier.py -s --headed
 
-## Automatisation (Playwright / Python)
 
-Le dossier [`automation/`](https://github.com/AissatouGassama/G99-bank-test-cases/tree/master/Automation) . contient un scénario positif complet, écrit en Python avec Playwright :
+## Prérequis pour exécuter les tests
 
-**Scénario couvert :** connexion manager → création d'un nouveau client → création d'un compte associé, avec vérification à chaque étape.
+1. Va sur https://demo.guru99.com/V4/index.php et suis la procédure « Steps To Generate Access » pour obtenir un identifiant manager
+2. Crée un fichier `.env` dans `Automation/` avec :
 
-Pratiques appliquées :
-- Attentes explicites (`expect(...).to_be_visible()`) plutôt que des pauses fixes (`wait_for_timeout`)
-- Gestion de tous les types de champs du formulaire (texte, date, radio, liste déroulante)
+GURU99_USER=ton_identifiant
+GURU99_PASSWORD=ton_mot_de_passe
 
-## Prérequis pour exécuter les scripts
+3. Installe les dépendances :
 
-Les scripts du dossier `Automation/` nécessitent des identifiants manager valides pour se connecter à Guru99 Bank :
-
-1. Va sur https://demo.guru99.com/V4/index.php
-2. Suis la procédure « Steps To Generate Access » indiquée sur la page pour obtenir un identifiant et un mot de passe
-3. Dans les scripts, remplace `METS_TON_IDENTIFIANT_ICI` et `METS_TON_MOT_DE_PASSE_ICI` par tes propres identifiants
-
-Dépendances Python :
-```
-pip install playwright pytest
+pip install playwright pytest pytest-playwright python-dotenv
 playwright install
-```
+
 
 ## Compétences démontrées
 
-- Analyse d'un cahier des charges (SRS) et identification d'incohérences dans la documentation
-- Conception de cas de test structurés à partir d'exigences fonctionnelles et techniques
-- Exécution de tests manuels et documentation rigoureuse des résultats
-- Gestion d'un bug tracker professionnel (consolidation, priorisation, suivi de statut)
-- Tests de régression suite à une évolution de version
-- Automatisation de tests avec Python et Playwright
-- Versionning avec Git/GitHub
+Analyse de SRS, conception et exécution de cas de test manuels, gestion d'un bug tracker, tests de régression, automatisation avec Python/Playwright/pytest (Page Object Model, fixtures), gestion des secrets, versionning Git/GitHub.
+
