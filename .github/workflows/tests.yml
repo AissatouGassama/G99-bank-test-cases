@@ -1,0 +1,20 @@
+name: Tests Guru99 Bank
+
+on: 
+push:
+  branches: [master]
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: playwright install --with-deps
+      - run: cd Automation && python -m pytest
+        env:
+          GURU99_USER: ${{ secrets.GURU99_USER }}
+          GURU99_PASSWORD: ${{ secrets.GURU99_PASSWORD }}
