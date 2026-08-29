@@ -13,7 +13,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - run: playwright install --with-deps
+      - run: python -m playwright install --with-deps
       - run: cd Automation && python -m pytest
         env:
           GURU99_USER: ${{ secrets.GURU99_USER }}
