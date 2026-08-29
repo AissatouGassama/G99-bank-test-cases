@@ -1,8 +1,8 @@
 name: Tests Guru99 Bank
 
 on: 
-push:
-  branches: [master]
+  push:
+    branches:  [master]
 
 jobs:
   test:
