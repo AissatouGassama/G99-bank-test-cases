@@ -1,8 +1,8 @@
 name: Tests Guru99 Bank
 
-on: 
+on:
   push:
-    branches:  [master]
+    branches: [master]
 
 jobs:
   test:
@@ -14,7 +14,7 @@ jobs:
           python-version: '3.12'
       - run: pip install -r requirements.txt
       - run: python -m playwright install --with-deps
-      - run: cd Automation && python -m pytest
+      - run: cd Automation && python -m pytest --html=rapport.html --self-contained-html
         env:
           GURU99_USER: ${{ secrets.GURU99_USER }}
           GURU99_PASSWORD: ${{ secrets.GURU99_PASSWORD }}
