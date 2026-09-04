@@ -16,6 +16,7 @@ class NewAccountPage:
         self.champ_account_type.select_option(account_type)
         self.champ_initdeposit.fill(initial_deposit)
         self.btn_submit.click()
+        self.page.wait_for_load_state("networkidle")
         print("url aprés submit", self.page.url)
         assert "AccCreateMsg.php" in self.page.url, "la création du compte à échoué"
         num_compte= self.page.url.split("aid")[1]
