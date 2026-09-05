@@ -38,6 +38,7 @@ class NewCustomerPage:
         self.champ_email.fill(email)
         self.champ_password.fill(password)
         self.btn_submit.click()
+        self.page.wait_for_load_state("networkidle")
         print("url apés submit:", self.page.url)
         assert "CustomerRegMsg.php" in self.page.url, "la creation du client à échoué"
         id_client=self.page.url.split("cid=")[1]
